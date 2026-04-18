@@ -163,7 +163,7 @@ async def Request(_url, connector=None, params=None, headers=None):
 
 async def Response(session, _url, params=None):
     logme.debug(__name__ + ':Response')
-    with timeout(120):
+    async with timeout(120):
         async with session.get(_url, ssl=True, params=params, proxy=httpproxy) as response:
             resp = await response.text()
             if response.status == 429:  # 429 implies Too many requests i.e. Rate Limit Exceeded
