@@ -1,0 +1,30 @@
+services:
+  twint:
+    image: ghcr.io/vandyahmadldm/twint:latest
+    volumes:
+      - ./data:/data
+    working_dir: /data
+    command: --help
+
+  # Contoh scrape user tertentu:
+  # docker compose run --rm twint -u elonmusk --output /data/elon.json --json
+
+  # Contoh dengan Tor:
+  twint-tor:
+    image: ghcr.io/vandyahmadldm/twint:latest
+    volumes:
+      - ./data:/data
+    working_dir: /data
+    environment:
+      - PROXY=socks5://tor:9050
+    depends_on:
+      - tor
+    profiles:
+      - tor
+
+  tor:
+    image: dperson/torproxy
+    ports:
+      - "9050:9050"
+    profiles:
+      - tor
